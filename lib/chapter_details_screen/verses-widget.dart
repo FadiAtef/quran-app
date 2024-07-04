@@ -7,16 +7,23 @@ class VersesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-
-      child: Text(
-        verse,
-        style: TextStyle(
-            fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-            textDirection: TextDirection.rtl,
-        textAlign: TextAlign.center,
-
+    return Card(
+      color: Colors.white,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: Text(
+          verse,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+          textDirection: TextDirection.rtl,
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }

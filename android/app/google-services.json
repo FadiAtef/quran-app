@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "211875988399",
+    "project_id": "task-daily-55121",
+    "storage_bucket": "task-daily-55121.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211875988399:android:510854114a58425cd7e55a",
+        "android_client_info": {
+          "package_name": "com.example.quran_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLbIl1KHnBqedOmWFXKNO4VXtDVaYjxTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
