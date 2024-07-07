@@ -18,7 +18,7 @@ class HadethDetailsScreen extends StatelessWidget {
           title: const Text(
             'اسلامي',
             style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 22, color: Colors.black),
+                fontWeight: FontWeight.bold, fontSize: 20, color: Colors.black),
           ),
         ),
         body: Container(

@@ -33,7 +33,7 @@ class _AhadethTabState extends State<AhadethTab> {
               textAlign: TextAlign.center,
               'الاحاديث',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 22,
                 color: Colors.black,
               ),
             ),
