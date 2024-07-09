@@ -17,7 +17,7 @@ class _ChapterDetailsScreanState extends State<ChapterDetailsScrean> {
   Widget build(BuildContext context) {
     ChapterDetailsArgs args =
         ModalRoute.of(context)?.settings.arguments as ChapterDetailsArgs;
-    if(verses.isEmpty) {
+    if (verses.isEmpty) {
       readFile(args.index);
     }
     return Container(
@@ -28,17 +28,21 @@ class _ChapterDetailsScreanState extends State<ChapterDetailsScrean> {
       )),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(args.nameChapter),
+          title: const Text(
+            'اسلامي',
+            style: TextStyle(
+                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
         ),
         body: verses.isEmpty
             ? const Center(
                 child: CircularProgressIndicator(),
               )
             : ListView.separated(
-                itemBuilder: (context, index) =>VersesWidget(verse: verses[index]),
+                itemBuilder: (context, index) =>
+                    VersesWidget(verse: verses[index]),
                 separatorBuilder: (context, index) => Container(
                       color: Theme.of(context).colorScheme.primary,
-
                     ),
                 itemCount: verses.length),
       ),
@@ -50,6 +54,7 @@ class _ChapterDetailsScreanState extends State<ChapterDetailsScrean> {
         await rootBundle.loadString('assets/files/${index + 1}.txt');
     List<String> suraLines = fileContent.split('\n');
     verses = suraLines;
+    verses.join('\n');
     setState(() {});
   }
 }
