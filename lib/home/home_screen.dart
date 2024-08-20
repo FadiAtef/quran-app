@@ -34,8 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
           elevation: 0,
-          title: Text('اسلامي'),
+          centerTitle: true,
+          title: Text('أسلامى'),
         ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: selectedicon,
