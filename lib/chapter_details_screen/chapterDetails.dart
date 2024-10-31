@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:quran_app/chapter_details_screen/verses-widget.dart';
+import 'package:quran_app/home/core/settings_provider.dart';
 import 'package:quran_app/home/quran_tab_widget/ChapterTitleWidget.dart';
 
 class ChapterDetailsScrean extends StatefulWidget {
@@ -15,44 +17,42 @@ class _ChapterDetailsScreanState extends State<ChapterDetailsScrean> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<SettingsProvider>(context);
     ChapterDetailsArgs args =
         ModalRoute.of(context)?.settings.arguments as ChapterDetailsArgs;
     if (verses.isEmpty) {
       readFile(args.index);
     }
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           image: DecorationImage(
         fit: BoxFit.cover,
-        image: AssetImage('assets/images/main_background.png'),
+        image: AssetImage(provider.getHomeBackground()),
       )),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'اسلامي',
-            style: TextStyle(
-                fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: Text(
+              'اسلامي',
+              style: Theme.of(context).appBarTheme.titleTextStyle,
+            ),
+            centerTitle: true,
+            elevation: 0,
+            backgroundColor: Colors.transparent,
           ),
-        ),
-        body: verses.isEmpty
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView.separated(
-                itemBuilder: (context, index) =>
-                    VersesWidget(verse: verses[index]),
-                separatorBuilder: (context, index) => Container(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                itemCount: verses.length),
-      ),
+          body: verses.isEmpty
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : VersesWidget(verse: suraLines)),
     );
   }
 
-  void readFile(int index) async {
+  List<String> suraLines = [];
+  Future<void> readFile(int index) async {
     String fileContent =
         await rootBundle.loadString('assets/files/${index + 1}.txt');
-    List<String> suraLines = fileContent.split('\n');
+    suraLines = fileContent.split('\n');
     verses = suraLines;
     verses.join('\n');
     setState(() {});

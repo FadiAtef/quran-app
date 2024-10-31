@@ -19,23 +19,22 @@ class _AhadethTabState extends State<AhadethTab> {
     return Column(
       children: [
         Expanded(
-            flex: 1, child: Image.asset('assets/images/ahadeth_image.png')),
+            flex: 1,
+            child: Image.asset(
+              'assets/images/ahadeth_image.png',
+            )),
         Container(
           alignment: Alignment.center,
           width: double.infinity,
           decoration: BoxDecoration(
               border: Border.symmetric(
-                  horizontal: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 2))),
-          child: const Padding(
+                  horizontal: BorderSide(color: Color(0xffB7935F), width: 2))),
+          child: Padding(
             padding: EdgeInsets.all(5.0),
             child: Text(
               textAlign: TextAlign.center,
               'الاحاديث',
-              style: TextStyle(
-                fontSize: 22,
-                color: Colors.black,
-              ),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ),

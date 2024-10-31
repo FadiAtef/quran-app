@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:quran_app/home/ahadeth_tab_widget/ahadeth_tab_widget.dart';
+import 'package:quran_app/home/core/my_theme_data.dart';
+import 'package:quran_app/home/core/settings_provider.dart';
 import 'package:quran_app/home/quran_tab_widget/quran_tab_widget.dart';
 import 'package:quran_app/home/radio_tab_widget/radio_tab_widget.dart';
 import 'package:quran_app/home/sebha_tab_widget/sebha_tab_widget.dart';
@@ -25,51 +29,104 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<SettingsProvider>(context);
+    var lange = AppLocalizations.of(context)!;
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
           image: DecorationImage(
         fit: BoxFit.cover,
-        image: AssetImage('assets/images/main_background.png'),
+        image: AssetImage(provider.getHomeBackground()),
       )),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
+          title: Text(
+            lange.islami,
+            style: Theme.of(context).appBarTheme.titleTextStyle,
+          ),
+          centerTitle: true,
           elevation: 0,
-          title: Text('اسلامي'),
+          backgroundColor: Colors.transparent,
         ),
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: provider.isDark()
+              ? Theme.of(context).primaryColor
+              : MyThemeData.lightPrimaryColor,
+          selectedIconTheme: IconThemeData(
+            color: provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+          ),
+          selectedLabelStyle: TextStyle(
+            color: provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+          ),
+          selectedItemColor:
+              provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+          unselectedIconTheme: IconThemeData(color: Colors.white),
+          unselectedItemColor: Colors.white,
           currentIndex: selectedicon,
           onTap: (index) {
             selectedicon = index;
             setState(() {});
           },
-          items: const [
+          items: [
             BottomNavigationBarItem(
+              backgroundColor: provider.isDark()
+                  ? Theme.of(context).primaryColor
+                  : MyThemeData.lightPrimaryColor,
               icon: ImageIcon(
-                AssetImage(
+                const AssetImage(
                   'assets/images/quran_ic.png',
                 ),
+                color:
+                    provider.isDark() ? MyThemeData.yellowColor : Colors.black,
               ),
-              label: 'Quran',
-              backgroundColor: Color(0xffB7935F),
+              label: lange.quran,
             ),
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('assets/images/ahadeth_ic.png')),
-              label: 'Ahadeth',
-              backgroundColor: Color(0xffB7935F),
+              backgroundColor: provider.isDark()
+                  ? Theme.of(context).primaryColor
+                  : MyThemeData.lightPrimaryColor,
+              icon: ImageIcon(
+                AssetImage(
+                  'assets/images/ahadeth_ic.png',
+                ),
+                color:
+                    provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+              ),
+              label: lange.hadeth,
             ),
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('assets/images/tasbeh_ic.png')),
-              label: 'Sebha',
-              backgroundColor: Color(0xffB7935F),
+              backgroundColor: provider.isDark()
+                  ? Theme.of(context).primaryColor
+                  : MyThemeData.lightPrimaryColor,
+              icon: ImageIcon(
+                AssetImage('assets/images/tasbeh_ic.png'),
+                color:
+                    provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+              ),
+              label: lange.sebha,
             ),
             BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage('assets/images/radio_ic.png')),
-              label: 'Radio',
-              backgroundColor: Color(0xffB7935F),
+              backgroundColor: provider.isDark()
+                  ? Theme.of(context).primaryColor
+                  : MyThemeData.lightPrimaryColor,
+              icon: ImageIcon(
+                AssetImage('assets/images/radio_ic.png'),
+                color:
+                    provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+              ),
+              label: lange.radio,
             ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: 'Settings')
+              backgroundColor: provider.isDark()
+                  ? Theme.of(context).primaryColor
+                  : MyThemeData.lightPrimaryColor,
+              icon: Icon(
+                Icons.settings,
+                color:
+                    provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+              ),
+              label: lange.setting,
+            ),
           ],
         ),
         body: tabs[selectedicon],
