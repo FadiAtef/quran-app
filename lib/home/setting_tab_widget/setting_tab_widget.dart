@@ -1,4 +1,9 @@
+import 'dart:developer';
+
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quran_app/home/core/settings_provider.dart';
 
 class SettingTab extends StatefulWidget {
   @override
@@ -6,115 +11,92 @@ class SettingTab extends StatefulWidget {
 }
 
 class _SettingTabState extends State<SettingTab> {
+  List<String> listMode = [
+    "Light",
+    "Dark",
+  ];
+  List<String> listLanguage = [
+    "English",
+    "عربي",
+  ];
   @override
   Widget build(BuildContext context) {
-    //var provider = Provider.of<SettingsProvider>(context);
+    var provider = Provider.of<SettingsProvider>(context);
+
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Mode Text
           Container(
-            padding: EdgeInsets.only(left: 15),
-            child: const Text(
+            padding: EdgeInsets.only(left: 20),
+            child: Text(
               'Mode',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-          ),
-
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 35, vertical: 10),
-            padding: EdgeInsets.only(left: 8),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Theme.of(context).primaryColor),
-            ),
-            child: ListTile(
-              title: Text(
-                'Light',
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 16),
-              ),
-              trailing: DropdownButton<String>(
-                // Use DropdownButton instead of ListTile's trailing
-                icon: const Icon(
-                  Icons.arrow_drop_down,
-                  size: 34,
-                ),
-                // Consider implementing onChanged callback with actual functionality
-                onChanged: (value) {},
-                underline: Container(), // Remove default underline
-                items: [
-                  DropdownMenuItem(
-                    value: 'light',
-                    child: Text(
-                      'Light',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: 'dark',
-                    child: Text(
-                      'Dark',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
-                ],
-              ),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
           SizedBox(
-            height: 12,
+            height: 15,
+          ),
+          CustomDropdown<String>(
+            hintText: 'Select Mode',
+            items: listMode,
+            initialItem: provider.currentThemeMode == ThemeMode.light
+                ? listMode[0]
+                : listMode[1],
+            onChanged: (value) {
+              if (value == "Dark") {
+                provider.changeThemeMode(ThemeMode.dark);
+              }
+              if (value == "Light") {
+                provider.changeThemeMode(ThemeMode.light);
+              }
+              log('changing value to: $value');
+            },
+            decoration: CustomDropdownDecoration(
+              closedFillColor: provider.isDark()
+                  ? Theme.of(context).primaryColorDark
+                  : Colors.white,
+              expandedFillColor: provider.isDark()
+                  ? Theme.of(context).primaryColorDark
+                  : Colors.white,
+            ),
+          ),
+          SizedBox(
+            height: 30,
           ),
           Container(
             padding: EdgeInsets.only(left: 15),
-            child: const Text(
+            child: Text(
               'Language',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
-
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
-            padding: const EdgeInsets.only(left: 8),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              border: Border.all(color: Theme.of(context).primaryColor),
-            ),
-            child: ListTile(
-              title: Text(
-                'English',
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 16),
-              ),
-              trailing: DropdownButton<String>(
-                // Use DropdownButton instead of ListTile's trailing
-                icon: const Icon(
-                  Icons.arrow_drop_down,
-                  size: 34,
-                ),
-
-                onChanged: (value) {},
-                underline: Container(), // Remove default underline
-                items: [
-                  DropdownMenuItem(
-                    value: 'English',
-                    child: Text(
-                      'English',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Arabic', // Add additional options if needed
-                    child: Text(
-                      'Arabic',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
-                    ),
-                  ),
-                ],
-              ),
+          SizedBox(
+            height: 15,
+          ),
+          CustomDropdown<String>(
+            hintText: 'Select Language',
+            items: listLanguage,
+            initialItem: provider.currentLanguage == "en"
+                ? listLanguage[0]
+                : listLanguage[1],
+            onChanged: (value) {
+              if (value == "English") {
+                provider.changeLanguageCode("en");
+              }
+              if (value == "عربي") {
+                provider.changeLanguageCode("ar");
+              }
+              log('changing value to: $value');
+            },
+            decoration: CustomDropdownDecoration(
+              closedFillColor: provider.isDark()
+                  ? Theme.of(context).primaryColorDark
+                  : Colors.white,
+              expandedFillColor: provider.isDark()
+                  ? Theme.of(context).primaryColorDark
+                  : Colors.white,
             ),
           ),
         ],

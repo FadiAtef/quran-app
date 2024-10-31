@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quran_app/home/quran_tab_widget/ChapterTitleWidget.dart';
 
 class QuranTab extends StatelessWidget {
@@ -238,13 +239,18 @@ class QuranTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var lange = AppLocalizations.of(context)!;
     return Container(
       color: Colors.transparent,
       child: Column(
         children: [
           Expanded(
-              flex: 1,
-              child: Image.asset('assets/images/quran_header_image.png')),
+            flex: 1,
+            child: Image.asset(
+              'assets/images/quran_header_image.png',
+              scale: 1.2,
+            ),
+          ),
           Container(
             width: double.infinity,
             height: 2,
@@ -252,14 +258,11 @@ class QuranTab extends StatelessWidget {
           ),
           Row(
             children: [
-              const Expanded(
+              Expanded(
                   child: Text(
                 textAlign: TextAlign.center,
-                'عدد الايات',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.black),
+                lange.numbersura,
+                style: Theme.of(context).textTheme.titleMedium,
               )),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 40),
@@ -267,14 +270,11 @@ class QuranTab extends StatelessWidget {
                 height: 40,
                 color: const Color(0xffB7935F),
               ),
-              const Expanded(
+              Expanded(
                   child: Text(
                 textAlign: TextAlign.center,
-                'اسم السورة',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.black),
+                lange.suraName,
+                style: Theme.of(context).textTheme.titleMedium,
               )),
             ],
           ),
