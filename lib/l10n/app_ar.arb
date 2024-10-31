@@ -6,5 +6,6 @@
 "radio":"راديو",
 "hadeth":"احاديث",
 "numbersura":"عدد الايات",
-"suraName":"اسم السورة"
+"suraName":"اسم السورة",
+  "numbertasbeh": "عدد التسبيحات"
 }

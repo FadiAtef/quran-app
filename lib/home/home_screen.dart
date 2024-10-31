@@ -58,10 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedLabelStyle: TextStyle(
             color: provider.isDark() ? MyThemeData.yellowColor : Colors.black,
           ),
+          unselectedIconTheme: const IconThemeData(color: Colors.white),
+          unselectedItemColor: Colors.white,
           selectedItemColor:
               provider.isDark() ? MyThemeData.yellowColor : Colors.black,
-          unselectedIconTheme: IconThemeData(color: Colors.white),
-          unselectedItemColor: Colors.white,
           currentIndex: selectedicon,
           onTap: (index) {
             selectedicon = index;
