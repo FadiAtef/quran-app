@@ -1,5 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/material.dart' hide Radio;
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quran_app/home/core/settings_provider.dart';
 import 'package:quran_app/home/radio_tab_widget/radio_model.dart';
@@ -9,85 +9,59 @@ import '../core/my_theme_data.dart';
 class RadioItem extends StatelessWidget {
   final Radios radio;
   final AudioPlayer player;
-  final Function next, previous;
-  final bool isPlaying; // New parameter to track if the radio is playing
+  final VoidCallback next;
+  final VoidCallback previous;
+  final bool isPlaying;
+  final VoidCallback onPlayPause;
 
   RadioItem({
-    super.key,
+    Key? key,
     required this.radio,
     required this.player,
     required this.next,
     required this.previous,
-    required this.isPlaying, // Add this parameter to the constructor
-  });
+    required this.isPlaying,
+    required this.onPlayPause,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<SettingsProvider>(context);
+    final Color iconColor = provider.isDark()
+        ? MyThemeData.yellowColor
+        : MyThemeData.lightPrimaryColor;
 
     return Container(
       width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.symmetric(vertical: 20.0),
       child: Column(
         children: [
+          // Controls for previous, play/pause, and next actions
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                onPressed: () => previous(),
+                onPressed: previous,
+                icon: Icon(Icons.skip_previous, size: 30, color: iconColor),
+              ),
+              const SizedBox(width: 15),
+              IconButton(
+                onPressed: onPlayPause,
                 icon: Icon(
-                  Icons.skip_previous,
+                  isPlaying ? Icons.pause_circle : Icons.play_circle,
                   size: 30,
-                  color: provider.isDark()
-                      ? MyThemeData.yellowColor
-                      : MyThemeData.lightPrimaryColor,
+                  color: iconColor,
                 ),
               ),
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               IconButton(
-                onPressed: () {
-                  if (isPlaying) {
-                    player.pause();
-                  } else if (radio.url != null) {
-                    player.play(UrlSource(radio.url!));
-                  }
-                },
-                icon: Icon(
-                  isPlaying
-                      ? Icons.pause_circle
-                      : Icons.play_circle, // Toggle icon
-                  size: 30,
-                  color: provider.isDark()
-                      ? MyThemeData.yellowColor
-                      : MyThemeData.lightPrimaryColor,
-                ),
-              ),
-              SizedBox(width: 15),
-              IconButton(
-                onPressed: () {
-                  player.pause();
-                },
-                icon: Icon(
-                  Icons.pause_circle,
-                  size: 30,
-                  color: provider.isDark()
-                      ? MyThemeData.yellowColor
-                      : MyThemeData.lightPrimaryColor,
-                ),
-              ),
-              SizedBox(width: 15),
-              IconButton(
-                onPressed: () => next(),
-                icon: Icon(
-                  Icons.skip_next,
-                  size: 30,
-                  color: provider.isDark()
-                      ? MyThemeData.yellowColor
-                      : MyThemeData.lightPrimaryColor,
-                ),
+                onPressed: next,
+                icon: Icon(Icons.skip_next, size: 30, color: iconColor),
               ),
             ],
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
+          // Display the radio name in the center
           Center(
             child: Text(
               radio.name ?? "",

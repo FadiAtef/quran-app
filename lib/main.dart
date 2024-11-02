@@ -8,21 +8,29 @@ import 'package:quran_app/home/splash_screen/splash_view.dart';
 import 'chapter_details_screen/chapterDetails.dart';
 import 'home/core/settings_provider.dart';
 
-void main() {
-  runApp(ChangeNotifierProvider(
-      create: (BuildContext context) => SettingsProvider(), child: Home()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var provider = SettingsProvider();
+  await provider.loadLanguage();
+  await provider.loadTheme();
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (BuildContext context) => provider, // Use the same instance
+      child: Home(),
+    ),
+  );
 }
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<SettingsProvider>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       locale: Locale(provider.currentLanguage),
-      // theme: ThemeData.light(),
       theme: ThemeData.light(),
-
       themeMode: provider.currentThemeMode,
       darkTheme: ThemeData.dark(),
       localizationsDelegates: AppLocalizations.localizationsDelegates,

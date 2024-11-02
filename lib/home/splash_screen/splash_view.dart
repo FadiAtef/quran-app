@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:quran_app/home/core/settings_provider.dart';
 import 'package:quran_app/home/home_screen.dart';
 
 class SplashView extends StatefulWidget {
@@ -25,8 +27,11 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<SettingsProvider>(context);
     return Image.asset(
-      'assets/images/splash.png',
+      provider.isDark()
+          ? 'assets/images/dark_back.png'
+          : 'assets/images/splash.png',
       fit: BoxFit.cover,
     );
   }
