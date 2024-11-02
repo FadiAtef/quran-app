@@ -50,82 +50,94 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: provider.isDark()
-              ? Theme.of(context).primaryColor
-              : MyThemeData.lightPrimaryColor,
-          selectedIconTheme: IconThemeData(
-            color: provider.isDark() ? MyThemeData.yellowColor : Colors.black,
-          ),
-          selectedLabelStyle: TextStyle(
-            color: provider.isDark() ? MyThemeData.yellowColor : Colors.black,
-          ),
-          unselectedIconTheme: const IconThemeData(color: Colors.white),
-          unselectedItemColor: Colors.white,
+              ? Theme.of(context).primaryColor // Use primary color in dark mode
+              : MyThemeData
+                  .lightPrimaryColor, // Use light primary color in light mode
           selectedItemColor:
               provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+          unselectedItemColor: Colors.white, // Unselected item color
+
           currentIndex: selectedicon,
           onTap: (index) {
-            selectedicon = index;
-            setState(() {});
+            setState(() {
+              selectedicon = index; // Update the selected index
+            });
           },
           items: [
             BottomNavigationBarItem(
-              backgroundColor: provider.isDark()
-                  ? Theme.of(context).primaryColor
-                  : MyThemeData.lightPrimaryColor,
               icon: ImageIcon(
-                const AssetImage(
-                  'assets/images/quran_ic.png',
-                ),
-                color:
-                    provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+                AssetImage('assets/images/quran_ic.png'),
+                color: selectedicon == 0
+                    ? (provider.isDark()
+                        ? MyThemeData.yellowColor
+                        : Colors.black)
+                    : Colors.white, // Color for unselected items
               ),
               label: lange.quran,
+              backgroundColor: provider.isDark()
+                  ? Theme.of(context)
+                      .primaryColor // Use primary color in dark mode
+                  : MyThemeData.lightPrimaryColor,
             ),
             BottomNavigationBarItem(
-              backgroundColor: provider.isDark()
-                  ? Theme.of(context).primaryColor
-                  : MyThemeData.lightPrimaryColor,
               icon: ImageIcon(
-                AssetImage(
-                  'assets/images/ahadeth_ic.png',
-                ),
-                color:
-                    provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+                AssetImage('assets/images/ahadeth_ic.png'),
+                color: selectedicon == 1
+                    ? (provider.isDark()
+                        ? MyThemeData.yellowColor
+                        : Colors.black)
+                    : Colors.white, // Color for unselected items
               ),
               label: lange.hadeth,
+              backgroundColor: provider.isDark()
+                  ? Theme.of(context)
+                      .primaryColor // Use primary color in dark mode
+                  : MyThemeData.lightPrimaryColor,
             ),
             BottomNavigationBarItem(
-              backgroundColor: provider.isDark()
-                  ? Theme.of(context).primaryColor
-                  : MyThemeData.lightPrimaryColor,
               icon: ImageIcon(
                 AssetImage('assets/images/tasbeh_ic.png'),
-                color:
-                    provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+                color: selectedicon == 2
+                    ? (provider.isDark()
+                        ? MyThemeData.yellowColor
+                        : Colors.black)
+                    : Colors.white, // Color for unselected items
               ),
               label: lange.sebha,
+              backgroundColor: provider.isDark()
+                  ? Theme.of(context)
+                      .primaryColor // Use primary color in dark mode
+                  : MyThemeData.lightPrimaryColor,
             ),
             BottomNavigationBarItem(
-              backgroundColor: provider.isDark()
-                  ? Theme.of(context).primaryColor
-                  : MyThemeData.lightPrimaryColor,
               icon: ImageIcon(
                 AssetImage('assets/images/radio_ic.png'),
-                color:
-                    provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+                color: selectedicon == 3
+                    ? (provider.isDark()
+                        ? MyThemeData.yellowColor
+                        : Colors.black)
+                    : Colors.white, // Color for unselected items
               ),
               label: lange.radio,
+              backgroundColor: provider.isDark()
+                  ? Theme.of(context)
+                      .primaryColor // Use primary color in dark mode
+                  : MyThemeData.lightPrimaryColor,
             ),
             BottomNavigationBarItem(
-              backgroundColor: provider.isDark()
-                  ? Theme.of(context).primaryColor
-                  : MyThemeData.lightPrimaryColor,
               icon: Icon(
                 Icons.settings,
-                color:
-                    provider.isDark() ? MyThemeData.yellowColor : Colors.black,
+                color: selectedicon == 4
+                    ? (provider.isDark()
+                        ? MyThemeData.yellowColor
+                        : Colors.black)
+                    : Colors.white, // Color for unselected items
               ),
               label: lange.setting,
+              backgroundColor: provider.isDark()
+                  ? Theme.of(context)
+                      .primaryColor // Use primary color in dark mode
+                  : MyThemeData.lightPrimaryColor,
             ),
           ],
         ),

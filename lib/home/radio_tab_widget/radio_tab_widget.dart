@@ -15,8 +15,26 @@ class RadioTab extends StatefulWidget {
 class _RadioTabState extends State<RadioTab> {
   PageController controller = PageController();
   final AudioPlayer player = AudioPlayer();
-  int currentPlayingIndex =
-      -1; // Tracks the index of the currently playing radio
+  List<Radios> radios = [];
+  int currentPlayingIndex = -1;
+  bool isPlaying = false;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    loadRadios();
+  }
+
+  void loadRadios() async {
+    final result = await ApiService.getRadios();
+    if (result != null) {
+      setState(() {
+        radios = result.radios ?? [];
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,62 +55,70 @@ class _RadioTabState extends State<RadioTab> {
         ),
         const SizedBox(height: 15),
         Expanded(
-          child: FutureBuilder(
-            future: ApiService.getRadios(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return const Center(child: Text("Failed to load Radios"));
-              } else if (snapshot.hasData) {
-                List<Radios>? radios = snapshot.data?.radios;
-
-                return PageView.builder(
+          child: isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : PageView.builder(
                   controller: controller,
                   physics: const PageScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  itemCount: radios?.length ?? 0,
+                  itemCount: radios.length,
                   itemBuilder: (context, index) {
                     return RadioItem(
                       player: player,
-                      radio: radios![index],
-                      isPlaying: index ==
-                          currentPlayingIndex, // Check if this item is currently playing
+                      radio: radios[index],
+                      isPlaying: index == currentPlayingIndex && isPlaying,
+                      onPlayPause: () {
+                        togglePlayPause(index);
+                      },
                       next: () {
-                        setState(() {
-                          player.pause();
-                          currentPlayingIndex = (index + 1) % radios.length;
-                        });
-                        controller.nextPage(
-                          duration: Duration(seconds: 1),
-                          curve: Curves.bounceIn,
-                        );
-                        player
-                            .play(UrlSource(radios[currentPlayingIndex].url!));
+                        _playNextRadio();
                       },
                       previous: () {
-                        setState(() {
-                          player.pause();
-                          currentPlayingIndex =
-                              (index - 1 + radios.length) % radios.length;
-                        });
-                        controller.previousPage(
-                          duration: Duration(seconds: 1),
-                          curve: Curves.bounceIn,
-                        );
-                        player
-                            .play(UrlSource(radios[currentPlayingIndex].url!));
+                        _playPreviousRadio();
                       },
                     );
                   },
-                );
-              } else {
-                return const Center(child: Text("No data available"));
-              }
-            },
-          ),
+                ),
         ),
       ],
+    );
+  }
+
+  void togglePlayPause(int index) async {
+    if (isPlaying && currentPlayingIndex == index) {
+      await player.pause();
+      setState(() {
+        isPlaying = false;
+      });
+    } else {
+      if (currentPlayingIndex != index) {
+        await player.setSourceUrl(radios[index].url!);
+      }
+      await player.resume();
+      setState(() {
+        isPlaying = true;
+        currentPlayingIndex = index;
+      });
+    }
+  }
+
+  void _playNextRadio() {
+    int nextIndex = (currentPlayingIndex + 1) % radios.length;
+    togglePlayPause(nextIndex);
+    controller.animateToPage(
+      nextIndex,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeIn,
+    );
+  }
+
+  void _playPreviousRadio() {
+    int prevIndex = (currentPlayingIndex - 1 + radios.length) % radios.length;
+    togglePlayPause(prevIndex);
+    controller.animateToPage(
+      prevIndex,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeIn,
     );
   }
 }
